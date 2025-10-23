@@ -36,21 +36,32 @@ public class MinMaxAccount extends BankingAccount {
     // --- ИСПРАВЛЕННЫЕ ПЕРЕОПРЕДЕЛЕННЫЕ МЕТОДЫ ---
 
     /**
-     * Переопределяет РЕАЛЬНЫЙ метод родителя, который принимает int.
+     * Переопределяет debit(int) с возвращаемым типом boolean.
+     * Возвращает результат операции родительского класса.
      */
     @Override
-    public void debit(int amount) { 
-        super.debit(amount); // Вызываем родительский метод с числом
-        updateMinMax();      // Обновляем min/max
+    public boolean debit(int amount) { // ИЗМЕНЕН ВОЗВРАЩАЕМЫЙ ТИП НА boolean
+        boolean success = super.debit(amount); // Вызываем родительский метод
+        
+        // Обновляем min/max только если операция была успешной
+        if (success) {
+            updateMinMax();      
+        }
+        return success; // Возвращаем результат
     }
 
     /**
-     * Переопределяет РЕАЛЬНЫЙ метод родителя, который принимает int.
+     * Переопределяет credit(int) с возвращаемым типом boolean (предположительно).
+     * Если credit в родителе возвращает void, вам придется изменить этот метод.
      */
     @Override
-    public void credit(int amount) { 
-        super.credit(amount); // Вызываем родительский метод с числом
-        updateMinMax();       // Обновляем min/max
+    public boolean credit(int amount) { // ПРЕДПОЛАГАЕМ, ЧТО credit ТОЖЕ ВОЗВРАЩАЕТ boolean
+        boolean success = super.credit(amount); // Вызываем родительский метод
+        
+        if (success) {
+            updateMinMax();       
+        }
+        return success;
     }
 
     // --- Новые методы ---
