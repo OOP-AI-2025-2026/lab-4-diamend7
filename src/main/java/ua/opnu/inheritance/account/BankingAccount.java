@@ -1,4 +1,4 @@
-package ua.opnu.java.inheritance.bill;
+package ua.opnu.inheritance.bill;
 /** Simple banking account that tracks balance in cents. */
 public class BankingAccount {
     private int balance; // cents

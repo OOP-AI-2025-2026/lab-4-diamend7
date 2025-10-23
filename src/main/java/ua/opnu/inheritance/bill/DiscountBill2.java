@@ -1,4 +1,4 @@
-package ua.opnu.java.inheritance.bill; // Тот же пакет
+package ua.opnu.inheritance.bill; // Тот же пакет
 
 /**
  * Моделирует чек со скидкой для постоянных клиентов.

@@ -1,4 +1,4 @@
-package ua.opnu.java.inheritance.bill; // Тот же пакет, что и у родителя
+package ua.opnu.inheritance.bill; // Тот же пакет, что и у родителя
 
 /**
  * Расширяет GroceryBill, добавляя логику скидок для постоянных клиентов.

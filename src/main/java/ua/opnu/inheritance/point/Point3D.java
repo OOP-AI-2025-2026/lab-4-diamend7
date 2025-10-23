@@ -1,93 +1,103 @@
-package ua.opnu.java.inheritance.point; // Тот же пакет, что и у Point
+package ua.opnu.inheritance.point; // ИСПРАВЛЕННЫЙ ПАКЕТ
 
 /**
- * Расширяет класс Point, добавляя третью z-координату.
+ * Класс, который моделирует точку в трехмерном пространстве (x, y, z).
  */
 public class Point3D extends Point {
 
-    // 1. Дополнительное поле для хранения z-координаты
     private int z;
 
     /**
-     * Создает точку с координатами (0,0,0)
+     * Создает объект Point3D с координатами (x, y, z)
+     * @param x координата по оси X
+     * @param y координата по оси Y
+     * @param z координата по оси Z
      */
-    public Point3D() {
-        // 2. Вызываем конструктор родителя Point()
-        super(); 
-        // 3. Инициализируем z
-        this.z = 0;
+    public Point3D(int x, int y, int z) {
+        super(x, y);
+        this.z = z;
     }
 
     /**
-     * Создает точку с заданными координатами (x,y,z)
+     * Создает объект Point3D с координатами (Point.x, Point.y, z)
+     * @param p объект Point, из которого берутся x и y
+     * @param z координата по оси Z
      */
-    public Point3D(int x, int y, int z) {
-        // 2. Вызываем конструктор родителя Point(int x, int y)
-        super(x, y); 
-        // 3. Инициализируем z
+    public Point3D(Point p, int z) {
+        // Мы предполагаем, что Point имеет поля x и y,
+        // доступные для наследующих классов (protected).
+        // Если у Point нет public геттеров, используем поля напрямую.
+        // Вызов Point(int x, int y)
+        super(p.getX(), p.getY()); // В Javadoc Point3D конструктор принимал Point,
+                                   // предполагаю, что Point имеет геттеры getX/getY.
+                                   // Если это не так, замените на super(p.x, p.y);
         this.z = z;
     }
 
     /**
      * Возвращает координату z
+     * @return координата z
      */
     public int getZ() {
-        return this.z;
+        return z;
     }
 
     /**
-     * Устанавливает новые координаты точки (x, y, z)
+     * Устанавливает новую координату z
+     * @param z новая координата z
      */
-    public void setLocation(int x, int y, int z) {
-        // 1. Используем метод родителя для установки x и y
-        super.setLocation(x, y);
-        // 2. Устанавливаем z
+    public void setZ(int z) {
         this.z = z;
     }
 
     /**
-     * Возвращает расстояние от текущей точки до входиной точки p
-     * с учетом всех трех координат.
+     * Возвращает расстояние от начала координат (0, 0, 0) до точки (x, y, z)
+     * @return расстояние
+     */
+    public double distanceFromOrigin() {
+        // Используем поля родителя (x и y) напрямую,
+        // т.к. "super.x" и "super.y" не требуются, если они protected.
+        // Если у родителя нет полей, используем getX/getY.
+        // Я использую getX() и getY(), если они есть.
+        return Math.sqrt(getX() * getX() + getY() * getY() + z * z);
+    }
+    
+    /**
+     * Возвращает расстояние от этой точки до другой точки (x, y, z)
+     * @param p другая точка
+     * @return расстояние
      */
     public double distance(Point3D p) {
-        // Используем геттеры родителя getX() и getY()
-        int dx = super.getX() - p.getX();
-        int dy = super.getY() - p.getY();
-        int dz = this.z - p.getZ(); // Используем z из этого класса
+        // Вычисляем разницу по всем трем осям
+        double dx = getX() - p.getX();
+        double dy = getY() - p.getY();
+        double dz = this.z - p.getZ();
         
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    // --- Переопределение методов ---
-
     /**
-     * Переопределенный метод. 
-     * Устанавливает новіе координаті точки (x, y), а z устанавливает в 0.
+     * Переопределяет метод equals
      */
     @Override
-    public void setLocation(int x, int y) {
-        super.setLocation(x, y);
-        this.z = 0; // По требованию задания
+    public boolean equals(Object o) {
+        if (!super.equals(o)) {
+            return false;
+        }
+        Point3D other = (Point3D) o;
+        return this.z == other.z;
     }
 
     /**
-     * Переопределенный метод. 
-     * Возвращает расстояние от точки до начала координат (0,0,0).
-     */
-    @Override
-    public double distanceFromOrigin() {
-        int x = super.getX();
-        int y = super.getY();
-        // Используем this.z
-        return Math.sqrt(x * x + y * y + this.z * this.z);
-    }
-
-    /**
-     * Переопределенный метод. 
-     * Возвращает строковое представление точки в формате (x, y, z).
+     * Переопределяет метод toString
      */
     @Override
     public String toString() {
-        return "(" + super.getX() + ", " + super.getY() + ", " + this.z + ")";
+        // Используем метод toString родителя для (x, y)
+        String s = super.toString(); 
+        // Результат родителя: (x, y). Нам нужно (x, y, z)
+        // Обрезаем последнюю скобку и добавляем ", z)"
+        s = s.substring(0, s.length() - 1);
+        return s + ", z=" + this.z + ")";
     }
 }

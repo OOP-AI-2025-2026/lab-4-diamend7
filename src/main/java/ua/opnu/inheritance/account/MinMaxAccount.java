@@ -1,4 +1,4 @@
-package ua.opnu.java.inheritance.account; // Тот же пакет, что и у родителя
+package ua.opnu.inheritance.account; // Тот же пакет, что и у родителя
 
 /**
  * Расширяет BankingAccount, добавляя отслеживание
