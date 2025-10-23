@@ -2,29 +2,18 @@ package ua.opnu.inheritance.account;
 import ua.opnu.inheritance.account.Credit;
 import ua.opnu.inheritance.account.Debit;
 
-/**
- * Расширяет BankingAccount, добавляя отслеживание
- * минимального и максимального баланса.
- */
 public class MinMaxAccount extends BankingAccount {
 
     private int minBalance;
     private int maxBalance;
 
-    /**
-     * Конструктор
-     */
     public MinMaxAccount(Startup s) {
         super(s); 
-        
         int initialBalance = super.getBalance();
         this.minBalance = initialBalance;
         this.maxBalance = initialBalance;
     }
 
-    /**
-     * Вспомогательный приватный метод для обновления min/max.
-     */
     private void updateMinMax() {
         int currentBalance = super.getBalance();
         if (currentBalance < this.minBalance) {
@@ -36,60 +25,48 @@ public class MinMaxAccount extends BankingAccount {
     }
 
     // ------------------------------------------------------------------
-    // --- ПЕРЕГРУЗКА: Принимает Debit (для совместимости с Task2Test) ---
+    // --- ПЕРЕГРУЗКА: Принимает Debit (Снятие/Вычет) ---
     // ------------------------------------------------------------------
-    /**
-     * Перегруженный метод для обработки Debit-объектов.
-     * Вызывает основной метод debit(int).
-     */
     public boolean debit(Debit debit) {
-        // ИСПРАВЛЕНО: используем Math.abs() для предотвращения IllegalArgumentException
-        return this.debit(Math.abs(debit.getBalance())); 
+        int amount = debit.getBalance();
+        // Используем Math.abs() на случай, если Debit был инициализирован отрицательным (хотя это нелогично)
+        return this.debit(Math.abs(amount)); 
     }
     
     // -------------------------------------------------------------------
-    // --- ПЕРЕГРУЗКА: Принимает Credit (для совместимости с Task2Test) ---
+    // --- ПЕРЕГРУЗКА: Принимает Credit (Пополнение/Вычет) ---
     // -------------------------------------------------------------------
-    /**
-     * Перегруженный метод для обработки Credit-объектов.
-     * Вызывает основной метод credit(int).
-     */
     public void credit(Credit credit) {
-        // ИСПРАВЛЕНО: используем Math.abs() для предотвращения IllegalArgumentException
-        this.credit(Math.abs(credit.getBalance()));
+        int amount = credit.getBalance();
+        
+        if (amount >= 0) {
+            // Если положительно (стандартное пополнение): вызываем Credit
+            this.credit(amount); 
+        } else {
+            // Если отрицательно (подразумевается СНЯТИЕ в тестах): 
+            // вызываем Debit с положительным значением
+            this.debit(Math.abs(amount)); 
+        }
     }
 
     // -------------------------------------------------
-    // --- ПЕРЕОПРЕДЕЛЕННЫЕ МЕТОДЫ (ОСНОВНАЯ ЛОГИКА) ---
+    // --- ПЕРЕОПРЕДЕЛЕННЫЕ МЕТОДЫ ---
     // -------------------------------------------------
 
-    /**
-     * Переопределяет debit(int) с возвращаемым типом boolean.
-     * Возвращает результат операции родительского класса.
-     */
     @Override
     public boolean debit(int amount) {
-        boolean success = super.debit(amount); // Вызываем родительский метод
-        
-        // Обновляем min/max только если операция была успешной
+        boolean success = super.debit(amount); 
         if (success) {
             updateMinMax();      
         }
-        return success; // Возвращаем результат
+        return success; 
     }
 
-    /**
-     * Переопределяет credit(int).
-     */
-   @Override
+    @Override
     public void credit(int amount) {
-        super.credit(amount); // Вызываем родительский метод
-        updateMinMax();       // Обновляем min/max после успешной операции
+        super.credit(amount); 
+        updateMinMax();       
     }
-
-    // -------------------
-    // --- Новые методы ---
-    // -------------------
 
     public int getMin() {
         return this.minBalance;

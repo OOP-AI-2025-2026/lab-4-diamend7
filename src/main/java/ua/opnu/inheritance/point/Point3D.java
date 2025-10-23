@@ -1,102 +1,86 @@
 package ua.opnu.inheritance.point; 
 
-/**
- * Класс, который моделирует точку в трехмерном пространстве (x, y, z).
- */
 public class Point3D extends Point {
 
     private int z;
-
-    // ----------------------------------------------------------------
-    // --- ИСПРАВЛЕНИЕ 1: Добавление конструктора по умолчанию (для test1, test5) ---
-    // ----------------------------------------------------------------
-    /**
-     * Создает объект Point3D с координатами (0, 0, 0)
-     */
+    
+    // --- Конструкторы (без изменений) ---
     public Point3D() {
         this(0, 0, 0);
     }
     
-    /**
-     * Создает объект Point3D с координатами (x, y, z)
-     * @param x координата по оси X
-     * @param y координата по оси Y
-     * @param z координата по оси Z
-     */
     public Point3D(int x, int y, int z) {
         super(x, y);
         this.z = z;
     }
 
-    /**
-     * Создает объект Point3D с координатами (Point.x, Point.y, z)
-     * @param p объект Point, из которого берутся x и y
-     * @param z координата по оси Z
-     */
     public Point3D(Point p, int z) {
-        // Вызов Point(int x, int y). Предполагаем, что Point имеет геттеры getX/getY.
         super(p.getX(), p.getY()); 
         this.z = z;
     }
     
-    // ---------------------------------------------------------------------------------------
-    // --- НОВОЕ ИСПРАВЛЕНИЕ: Переопределение setLocation(int, int) для сброса Z в 0 (для test6) ---
-    // ---------------------------------------------------------------------------------------
-    /**
-     * Переопределяет 2D метод setLocation. 
-     * Устанавливает новую локацию (x, y) и сбрасывает z в 0.
-     */
+    // --- Метод setLocation(int, int, int) (без изменений) ---
+    public void setLocation(int x, int y, int z) {
+        super.setLocation(x, y); 
+        this.z = z;              
+    }
+    
+    // --- ПЕРЕОПРЕДЕЛЕНИЕ setLocation(int, int) для сброса Z в 0 (Task3 Fix) ---
     @Override
     public void setLocation(int x, int y) {
-        super.setLocation(x, y); // Устанавливаем X и Y
-        this.z = 0;              // Сбрасываем Z в 0
+        super.setLocation(x, y); 
+        this.z = 0;              // Сбрасываем Z в 0, как требуется тестами для 2D-операции
     }
-    
-    // ---------------------------------------------------------------------------------------
-    // --- ИСПРАВЛЕНИЕ 2: Добавление setLocation(int, int, int) (для test7, test8, test9, test10) ---
-    // ---------------------------------------------------------------------------------------
-    /**
-     * Устанавливает новое расположение точки в 3D пространстве.
-     * @param x новая координата x
-     * @param y новая координата y
-     * @param z новая координата z
-     */
-    public void setLocation(int x, int y, int z) {
-        super.setLocation(x, y); // Используем родительский метод для X и Y
-        this.z = z;              // Устанавливаем Z
-    }
-    
-    // ... (остальные методы без изменений)
 
+    // ---------------------------------------------------------------------------------
+    // --- НОВОЕ ИСПРАВЛЕНИЕ: Переопределение distance(Point) для 3D логики (Task3 Fix) ---
+    // ---------------------------------------------------------------------------------
     /**
-     * Возвращает координату z
-     * @return координата z
+     * Переопределяет метод для вычисления 3D расстояния.
+     * Корректно обрабатывает случай, когда p является Point (z=0) или Point3D (z=pz).
      */
-    public int getZ() {
-        return z;
+    @Override
+    public double distance(Point p) {
+        double dx = this.getX() - p.getX();
+        double dy = this.getY() - p.getY();
+        
+        int pz = 0;
+        if (p instanceof Point3D) {
+            // Если другая точка 3D, берем ее Z
+            pz = ((Point3D) p).getZ();
+        }
+        
+        double dz = this.getZ() - pz;
+        
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
     
-    // ... (остальные методы)
+    // --- distance(Point3D p) оставляем, как есть, он вызывает distance(Point p)
+    // --- или, если он нужен тестам явно, убедимся, что он вызывает переопределенный
+    public double distance(Point3D p) {
+        return this.distance((Point)p); // Вызываем наш новый 3D-метод
+    }
+    
+    public double distanceFromOrigin() {
+        // Используем 3D-формулу
+        return Math.sqrt((long) getX() * getX() + (long) getY() * getY() + (long) z * z);
+    }
+
+    // --- Геттеры/Сеттеры/ToString/Equals (без изменений) ---
+    public int getZ() { return z; }
+    public void setZ(int z) { this.z = z; }
     
     @Override
     public boolean equals(Object o) {
-        if (!super.equals(o)) {
-            return false;
-        }
-        // Должна быть проверка на тип, чтобы избежать ClassCastException
-        if (!(o instanceof Point3D)) {
-            return false;
-        }
-        
+        if (!super.equals(o)) return false;
+        if (!(o instanceof Point3D)) return false;
         Point3D other = (Point3D) o;
         return this.z == other.z;
     }
 
     @Override
     public String toString() {
-        // Используем метод toString родителя для (x, y)
         String s = super.toString(); 
-        // Результат родителя: (x, y). Обрезаем последнюю скобку и добавляем ", z)"
         s = s.substring(0, s.length() - 1);
         return s + ", z=" + this.z + ")";
     }
