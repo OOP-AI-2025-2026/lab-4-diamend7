@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import ua.opnu.point.Point3D;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import ua.opnu.inheritance.point.Point3D;
 
 public class Task3Test {
     @Nested
