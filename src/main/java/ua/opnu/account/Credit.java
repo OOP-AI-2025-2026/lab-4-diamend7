@@ -1,4 +1,4 @@
-package ua.opnu.inheritance.account;
+package ua.opnu.account;
 
 public class Credit {
   private int balance;
