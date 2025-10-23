@@ -54,14 +54,11 @@ public class MinMaxAccount extends BankingAccount {
      * Переопределяет credit(int) с возвращаемым типом boolean (предположительно).
      * Если credit в родителе возвращает void, вам придется изменить этот метод.
      */
-    @Override
-    public boolean credit(int amount) { // ПРЕДПОЛАГАЕМ, ЧТО credit ТОЖЕ ВОЗВРАЩАЕТ boolean
-        boolean success = super.credit(amount); // Вызываем родительский метод
-        
-        if (success) {
-            updateMinMax();       
-        }
-        return success;
+   @Override
+    public void credit(int amount) { // ИЗМЕНЕН ВОЗВРАЩАЕМЫЙ ТИП НА void
+        super.credit(amount); // Вызываем родительский метод
+        updateMinMax();       // Обновляем min/max после успешной операции
+        // Нет возврата, т.к. родительский метод - void.
     }
 
     // --- Новые методы ---
