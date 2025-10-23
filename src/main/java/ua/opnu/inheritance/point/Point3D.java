@@ -1,4 +1,4 @@
-package ua.opnu.inheritance.point; // ИСПРАВЛЕННЫЙ ПАКЕТ
+package ua.opnu.inheritance.point; 
 
 /**
  * Класс, который моделирует точку в трехмерном пространстве (x, y, z).
@@ -7,6 +7,16 @@ public class Point3D extends Point {
 
     private int z;
 
+    // ----------------------------------------------------------------
+    // --- ИСПРАВЛЕНИЕ 1: Добавление конструктора по умолчанию (для test1, test5) ---
+    // ----------------------------------------------------------------
+    /**
+     * Создает объект Point3D с координатами (0, 0, 0)
+     */
+    public Point3D() {
+        this(0, 0, 0);
+    }
+    
     /**
      * Создает объект Point3D с координатами (x, y, z)
      * @param x координата по оси X
@@ -24,14 +34,23 @@ public class Point3D extends Point {
      * @param z координата по оси Z
      */
     public Point3D(Point p, int z) {
-        // Мы предполагаем, что Point имеет поля x и y,
-        // доступные для наследующих классов (protected).
-        // Если у Point нет public геттеров, используем поля напрямую.
-        // Вызов Point(int x, int y)
-        super(p.getX(), p.getY()); // В Javadoc Point3D конструктор принимал Point,
-                                   // предполагаю, что Point имеет геттеры getX/getY.
-                                   // Если это не так, замените на super(p.x, p.y);
+        // Вызов Point(int x, int y). Предполагаем, что Point имеет геттеры getX/getY.
+        super(p.getX(), p.getY()); 
         this.z = z;
+    }
+    
+    // ---------------------------------------------------------------------------------------
+    // --- ИСПРАВЛЕНИЕ 2: Добавление setLocation(int, int, int) (для test7, test8, test9, test10) ---
+    // ---------------------------------------------------------------------------------------
+    /**
+     * Устанавливает новое расположение точки в 3D пространстве.
+     * @param x новая координата x
+     * @param y новая координата y
+     * @param z новая координата z
+     */
+    public void setLocation(int x, int y, int z) {
+        super.setLocation(x, y); // Используем родительский метод для X и Y
+        this.z = z;              // Устанавливаем Z
     }
 
     /**
@@ -55,10 +74,7 @@ public class Point3D extends Point {
      * @return расстояние
      */
     public double distanceFromOrigin() {
-        // Используем поля родителя (x и y) напрямую,
-        // т.к. "super.x" и "super.y" не требуются, если они protected.
-        // Если у родителя нет полей, используем getX/getY.
-        // Я использую getX() и getY(), если они есть.
+        // Формула: sqrt(x^2 + y^2 + z^2)
         return Math.sqrt(getX() * getX() + getY() * getY() + z * z);
     }
     
@@ -84,6 +100,11 @@ public class Point3D extends Point {
         if (!super.equals(o)) {
             return false;
         }
+        // Должна быть проверка на тип, чтобы избежать ClassCastException
+        if (!(o instanceof Point3D)) {
+            return false;
+        }
+        
         Point3D other = (Point3D) o;
         return this.z == other.z;
     }
@@ -95,8 +116,7 @@ public class Point3D extends Point {
     public String toString() {
         // Используем метод toString родителя для (x, y)
         String s = super.toString(); 
-        // Результат родителя: (x, y). Нам нужно (x, y, z)
-        // Обрезаем последнюю скобку и добавляем ", z)"
+        // Результат родителя: (x, y). Обрезаем последнюю скобку и добавляем ", z)"
         s = s.substring(0, s.length() - 1);
         return s + ", z=" + this.z + ")";
     }
