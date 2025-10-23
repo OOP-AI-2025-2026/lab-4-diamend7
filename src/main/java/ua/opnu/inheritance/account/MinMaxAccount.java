@@ -1,44 +1,79 @@
-package ua.opnu.java.inheritance.bill;
+package ua.opnu.java.inheritance.account; // Тот же пакет, что и у родителя
 
 /**
- * MinMaxAccount extends BankingAccount and tracks minimum and maximum balance.
+ * Расширяет BankingAccount, добавляя отслеживание
+ * минимального и максимального баланса.
  */
 public class MinMaxAccount extends BankingAccount {
 
-    private int min;
-    private int max;
+    // 1. Новые поля для отслеживания min/max
+    private int minBalance;
+    private int maxBalance;
 
+    /**
+     * Конструктор
+     * @param s Объект с информацией о стартовом балансе
+     */
     public MinMaxAccount(Startup s) {
-        super(s);
-        int b = getBalance();
-        this.min = b;
-        this.max = b;
+        // 2. Вызываем конструктор родителя
+        super(s); 
+        
+        // 3. Получаем стартовый баланс, установленный родителем,
+        //    и инициализируем им min/max
+        int initialBalance = super.getBalance();
+        this.minBalance = initialBalance;
+        this.maxBalance = initialBalance;
     }
 
-    @Override
-    public void credit(int cents) {
-        super.credit(cents);
-        updateMinMax();
-    }
-
-    @Override
-    public boolean debit(int cents) {
-        boolean ok = super.debit(cents);
-        updateMinMax();
-        return ok;
-    }
-
+    /**
+     * Вспомогательный приватный метод для обновления min/max
+     * после каждой операции.
+     */
     private void updateMinMax() {
-        int b = getBalance();
-        if (b < min) {
-            min = b;
+        int currentBalance = super.getBalance();
+        if (currentBalance < this.minBalance) {
+            this.minBalance = currentBalance;
         }
-        if (b > max) {
-            max = b;
+        if (currentBalance > this.maxBalance) {
+            this.maxBalance = currentBalance;
         }
     }
 
-    public int getMin() { return min; }
+    // --- Переопределение методов, меняющих баланс ---
 
-    public int getMax() { return max; }
+    /**
+     * Переопределяет метод debit.
+     * Сначала выполняет операцию, затем обновляет min/max.
+     */
+    @Override
+    public void debit(Debit d) {
+        super.debit(d); // 4. Сначала пусть родитель выполнит операцию
+        updateMinMax();   // 5. Затем проверяем новый баланс
+    }
+
+    /**
+     * Переопределяет метод credit.
+     * Сначала выполняет операцию, затем обновляет min/max.
+     */
+    @Override
+    public void credit(Credit c) {
+        super.credit(c); // 4. Сначала пусть родитель выполнит операцию
+        updateMinMax();    // 5. Затем проверяем новый баланс
+    }
+
+    // --- Новые методы ---
+
+    /**
+     * Возвращает минимальное значение баланса
+     */
+    public int getMin() {
+        return this.minBalance;
+    }
+
+    /**
+     * Возвращает максимальное значение баланса
+     */
+    public int getMax() {
+        return this.maxBalance;
+    }
 }
