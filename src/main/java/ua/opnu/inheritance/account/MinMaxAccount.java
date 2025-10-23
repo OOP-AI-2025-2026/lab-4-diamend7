@@ -1,4 +1,6 @@
 package ua.opnu.inheritance.account;
+import ua.opnu.inheritance.account.Credit;
+import ua.opnu.inheritance.account.Debit;
 
 /**
  * Расширяет BankingAccount, добавляя отслеживание
@@ -33,14 +35,40 @@ public class MinMaxAccount extends BankingAccount {
         }
     }
 
-    // --- ИСПРАВЛЕННЫЕ ПЕРЕОПРЕДЕЛЕННЫЕ МЕТОДЫ ---
+    // ------------------------------------------------------------------
+    // --- ПЕРЕГРУЗКА: Принимает Debit (для совместимости с Task2Test) ---
+    // ------------------------------------------------------------------
+    /**
+     * Перегруженный метод для обработки Debit-объектов.
+     * Вызывает основной метод debit(int).
+     */
+    public boolean debit(Debit debit) {
+        // Предполагается, что у класса Debit есть метод getValue()
+        return this.debit(debit.getValue()); 
+    }
+    
+    // -------------------------------------------------------------------
+    // --- ПЕРЕГРУЗКА: Принимает Credit (для совместимости с Task2Test) ---
+    // -------------------------------------------------------------------
+    /**
+     * Перегруженный метод для обработки Credit-объектов.
+     * Вызывает основной метод credit(int).
+     */
+    public void credit(Credit credit) {
+        // Предполагается, что у класса Credit есть метод getValue()
+        this.credit(credit.getValue());
+    }
+
+    // -------------------------------------------------
+    // --- ПЕРЕОПРЕДЕЛЕННЫЕ МЕТОДЫ (ОСНОВНАЯ ЛОГИКА) ---
+    // -------------------------------------------------
 
     /**
      * Переопределяет debit(int) с возвращаемым типом boolean.
      * Возвращает результат операции родительского класса.
      */
     @Override
-    public boolean debit(int amount) { // ИЗМЕНЕН ВОЗВРАЩАЕМЫЙ ТИП НА boolean
+    public boolean debit(int amount) {
         boolean success = super.debit(amount); // Вызываем родительский метод
         
         // Обновляем min/max только если операция была успешной
@@ -51,17 +79,17 @@ public class MinMaxAccount extends BankingAccount {
     }
 
     /**
-     * Переопределяет credit(int) с возвращаемым типом boolean (предположительно).
-     * Если credit в родителе возвращает void, вам придется изменить этот метод.
+     * Переопределяет credit(int).
      */
    @Override
-    public void credit(int amount) { // ИЗМЕНЕН ВОЗВРАЩАЕМЫЙ ТИП НА void
+    public void credit(int amount) {
         super.credit(amount); // Вызываем родительский метод
         updateMinMax();       // Обновляем min/max после успешной операции
-        // Нет возврата, т.к. родительский метод - void.
     }
 
+    // -------------------
     // --- Новые методы ---
+    // -------------------
 
     public int getMin() {
         return this.minBalance;
