@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Nested;
 import ua.opnu.inheritance.bill.Employee;
 import ua.opnu.inheritance.bill.Item;
 import ua.opnu.inheritance.bill.DiscountBill;
+import ua.opnu.inheritance.bill.DiscountBill2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

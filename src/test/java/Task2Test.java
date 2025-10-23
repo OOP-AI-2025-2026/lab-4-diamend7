@@ -44,7 +44,7 @@ public class Task2Test {
         @DisplayName("Test getBalance() 1")
         void test4() {
             MinMaxAccount account = new MinMaxAccount(new Startup(0));
-            account.debit(new Debit(150));
+            account.debit(150); // <--- ИСПРАВЛЕНО
 
             int expected = 150;
             assertEquals(expected, account.getBalance());
@@ -65,8 +65,8 @@ public class Task2Test {
         @DisplayName("Test getBalance() 3")
         void test6() {
             MinMaxAccount account = new MinMaxAccount(new Startup(0));
-            account.debit(new Debit(450));
-            account.credit(new Credit(-225));
+            account.debit(450);     // <--- ИСПРАВЛЕНО
+            account.credit(-225);   // <--- ИСПРАВЛЕНО
 
             int expected = 225;
             assertEquals(expected, account.getBalance());
