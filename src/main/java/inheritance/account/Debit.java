@@ -1,9 +1,10 @@
-package ua.opnu.account;
+package ua.opnu.java.inheritance.bill;
 
-public class Credit {
+public class Debit {
+
   private int balance;
 
-  public Credit(int balance) {
+  public Debit(int balance) {
     setBalance(balance);
   }
 

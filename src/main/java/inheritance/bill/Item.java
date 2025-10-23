@@ -1,4 +1,4 @@
-package ua.opnu.bill;
+package ua.opnu.java.inheritance.bill;
 
 /** Item with price and absolute discount in currency units. */
 public class Item {

@@ -1,4 +1,4 @@
-package ua.opnu.point;
+package ua.opnu.java.inheritance.bill;
 
 /** 2D point with int coordinates. */
 public class Point {

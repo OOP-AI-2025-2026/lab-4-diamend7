@@ -1,4 +1,4 @@
-package ua.opnu.account;
+package ua.opnu.java.inheritance.bill;
 
 /**
  * MinMaxAccount extends BankingAccount and tracks minimum and maximum balance.

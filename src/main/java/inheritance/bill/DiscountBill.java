@@ -1,4 +1,4 @@
-package ua.opnu.bill;
+package ua.opnu.java.inheritance.bill;
 
 /**
  * DiscountBill extends GroceryBill and counts discounts for regular customers.

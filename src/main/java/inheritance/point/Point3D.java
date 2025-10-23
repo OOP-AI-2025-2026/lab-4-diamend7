@@ -1,4 +1,4 @@
-package ua.opnu.point;
+package ua.opnu.java.inheritance.bill;
 
 /** 3D point that extends Point by adding z coordinate and 3D behavior. */
 public class Point3D extends Point {

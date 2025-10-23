@@ -1,4 +1,4 @@
-package ua.opnu.bill;
+package ua.opnu.java.inheritance.bill;
 
 import java.util.List;
 

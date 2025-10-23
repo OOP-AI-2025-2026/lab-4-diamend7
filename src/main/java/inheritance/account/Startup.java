@@ -1,4 +1,4 @@
-package ua.opnu.account;
+package ua.opnu.java.inheritance.bill;
 
 /** Startup: provides initial balance for BankingAccount (in cents). */
 public class Startup {

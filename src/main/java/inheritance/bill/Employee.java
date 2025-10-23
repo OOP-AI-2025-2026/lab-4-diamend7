@@ -1,4 +1,4 @@
-package ua.opnu.bill;
+package ua.opnu.java.inheritance.bill;
 
 /** Simple employee holder used by GroceryBill. */
 public class Employee {
