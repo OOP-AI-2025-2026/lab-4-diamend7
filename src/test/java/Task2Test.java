@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Nested;
 import ua.opnu.inheritance.account.Credit;
 import ua.opnu.inheritance.account.Debit;
 import ua.opnu.inheritance.account.Startup;
+import ua.opnu.inheritance.account.MinMaxAccount;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
