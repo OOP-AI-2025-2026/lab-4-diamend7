@@ -2,63 +2,50 @@ package ua.opnu.point;
 
 public class Point3D extends Point {
 
-  public static void main(String[] args) {
+    private int z;
 
-    Point3D p = new Point3D(1, 1, 1);
+    public Point3D() {
+        super(0, 0);
+        this.z = 0;
+    }
 
-    p.setLocation(2, 2);
+    public Point3D(int x, int y, int z) {
+        super(x, y);
+        this.z = z;
+    }
 
-    System.out.println(p.getZ());
+    public int getZ() {
+        return z;
+    }
 
-    System.out.println(p);
-  }
+    public void setLocation(int x, int y, int z) {
+        super.setLocation(x, y);
+        this.z = z;
+    }
 
-  private int z;
+    @Override
+    public void setLocation(int x, int y) {
+        super.setLocation(x, y);
+        this.z = 0;   // ВАЖЛИВО: 3D перетворюється на 2D → z = 0
+    }
 
-  public Point3D() {
-    this(0, 0, 0);
-  }
+    public double distance(Point3D p) {
+        long dx = this.getX() - p.getX();
+        long dy = this.getY() - p.getY();
+        long dz = this.z - p.getZ();
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    }
 
-  public Point3D(int x, int y, int z) {
-    setX(x);
-    setY(y);
-    setZ(z);
-  }
+    @Override
+    public double distanceFromOrigin() {
+        long dx = this.getX();
+        long dy = this.getY();
+        long dz = this.z;
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    }
 
-  private void setZ(int z) {
-    this.z = z;
-  }
-
-
-  public int getZ() {
-      return this.z;
-  }
-
-  @Override
-  public void setLocation(int x, int y) {
-    setX(x);
-    setY(y);
-    setZ(0);
-  }
-
-  public void setLocation(int x, int y, int z) {
-    setX(x);
-    setY(y);
-    setZ(z);
-  }
-
-  public double distance(Point3D p) {
-    return Math.sqrt(
-        Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2) + Math.pow(this.z - p.z, 2));
-  }
-
-  @Override
-  public String toString() {
-    return "Point{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
-  }
-
-  @Override
-  public double distanceFromOrigin() {
-        return distance(new Point3D(0, 0, 0));
+    @Override
+    public String toString() {
+        return "(" + getX() + ", " + getY() + ", " + z + ")";
     }
 }
