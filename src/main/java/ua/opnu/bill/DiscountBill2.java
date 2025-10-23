@@ -1,67 +1,51 @@
 package ua.opnu.bill;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-
 public class DiscountBill2 {
 
-  GroceryBill bill;
-  private boolean regularCustomer;
+    private final GroceryBill bill;
+    private final boolean regularCustomer;
+    private int discountCount = 0;
+    private double discountAmount = 0.0;
 
-  public DiscountBill2(Employee clerk, boolean regularCustomer) {
-    this.bill = new GroceryBill(clerk);
-    this.regularCustomer = regularCustomer;
-  }
-
-  public int getDiscountCount() {
-    int count = 0;
-    ArrayList<Item> items = bill.getItems();
-
-    for (Item item : items) {
-      if (item.getDiscount() > 0 && regularCustomer) {
-        count++;
-      }
+    public DiscountBill2(Employee clerk, boolean regularCustomer) {
+        this.bill = new GroceryBill(clerk);
+        this.regularCustomer = regularCustomer;
     }
-    return count;
-  }
 
-  public double getDiscountAmount() {
-    double amount = 0;
-    ArrayList<Item> items = bill.getItems();
-    for (Item item : items) {
-        if (item.getDiscount() > 0 && regularCustomer)
-      amount += item.getDiscount();
+    public void add(Item i) {
+        bill.add(i);
+        if (regularCustomer && i.getDiscount() > 0) {
+            discountCount++;
+            discountAmount += i.getDiscount();
+        }
     }
-    return amount;
-  }
 
-  public double getTotal() {
-      double total;
-      if (!regularCustomer)
-          total = bill.getTotal();
-      else
-          total = bill.getTotal() - getDiscountAmount();
+    public double getTotal() {
+        double full = bill.getTotal();
+        return regularCustomer ? (full - discountAmount) : full;
+    }
 
-      total = Math.round(total * 100.0) / 100.0;
-      return total;
-  }
+    public int getDiscountCount() {
+        return regularCustomer ? discountCount : 0;
+    }
 
-  public double getDiscountPercent() {
-      double discount = 100 - ((getTotal() * 100) / bill.getTotal());
-      BigDecimal bd = new BigDecimal(Double.toString(discount));
-      bd = bd.setScale(13, BigDecimal.ROUND_HALF_UP);
-      return bd.doubleValue();
-  }
+    public double getDiscountAmount() {
+        return regularCustomer ? discountAmount : 0.0;
+    }
 
-  public Employee getClerk() {
-    return bill.getClerk();
-  }
+    public double getDiscountPercent() {
+        double full = bill.getTotal();
+        if (!regularCustomer || full == 0) return 0.0;
+        double withDiscount = full - discountAmount;
+        return 100.0 - (withDiscount * 100.0) / full;
+    }
 
-  public void add(Item i) {
-    bill.add(i);
-  }
+    // ✅ Додаткові делегати (якщо їх викликають тести)
+    public Employee getClerk() {
+        return bill.getClerk();
+    }
 
-  public ArrayList<Item> getItems() {
-    return bill.getItems();
-  }
+    public java.util.List<Item> getItems() {
+        return bill.getItems();
+    }
 }
