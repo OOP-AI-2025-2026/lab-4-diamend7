@@ -1,4 +1,4 @@
-package ua.opnu.inheritance.account; 
+package ua.opnu.inheritance.account;
 
 /**
  * Расширяет BankingAccount, добавляя отслеживание
@@ -15,15 +15,13 @@ public class MinMaxAccount extends BankingAccount {
     public MinMaxAccount(Startup s) {
         super(s); 
         
-        // Получаем стартовый баланс, установленный родителем.
-        int initialBalance = super.getBalance(); 
+        int initialBalance = super.getBalance();
         this.minBalance = initialBalance;
         this.maxBalance = initialBalance;
     }
 
     /**
-     * Вспомогательный приватный метод для обновления min/max
-     * после каждой операции.
+     * Вспомогательный приватный метод для обновления min/max.
      */
     private void updateMinMax() {
         int currentBalance = super.getBalance();
@@ -35,25 +33,24 @@ public class MinMaxAccount extends BankingAccount {
         }
     }
 
-    // --- Переопределение методов, меняющих баланс ---
+    // --- ИСПРАВЛЕННЫЕ ПЕРЕОПРЕДЕЛЕННЫЕ МЕТОДЫ ---
 
     /**
-     * Переопределяет метод debit(Debit d)
+     * Переопределяет РЕАЛЬНЫЙ метод родителя, который принимает int.
      */
-    @Override // <--- Убедитесь, что эта аннотация работает! Если нет,
-              // значит, имя метода не debit, а, например, processDebit
-    public void debit(Debit d) { 
-        super.debit(d); // Вызов родительского метода
-        updateMinMax(); // Обновляем min/max
+    @Override
+    public void debit(int amount) { 
+        super.debit(amount); // Вызываем родительский метод с числом
+        updateMinMax();      // Обновляем min/max
     }
 
     /**
-     * Переопределяет метод credit(Credit c)
+     * Переопределяет РЕАЛЬНЫЙ метод родителя, который принимает int.
      */
-    @Override // <--- Убедитесь, что эта аннотация работает! 
-    public void credit(Credit c) { 
-        super.credit(c); // Вызов родительского метода
-        updateMinMax();  // Обновляем min/max
+    @Override
+    public void credit(int amount) { 
+        super.credit(amount); // Вызываем родительский метод с числом
+        updateMinMax();       // Обновляем min/max
     }
 
     // --- Новые методы ---
