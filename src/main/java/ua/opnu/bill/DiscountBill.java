@@ -1,27 +1,31 @@
 package ua.opnu.bill;
 
-public class DiscountBill2 {
+/**
+ * DiscountBill extends GroceryBill and counts discounts for regular customers.
+ */
+public class DiscountBill extends GroceryBill {
 
-    private final GroceryBill bill;
     private final boolean regularCustomer;
     private int discountCount = 0;
     private double discountAmount = 0.0;
 
-    public DiscountBill2(Employee clerk, boolean regularCustomer) {
-        this.bill = new GroceryBill(clerk);
+    public DiscountBill(Employee clerk, boolean regularCustomer) {
+        super(clerk);
         this.regularCustomer = regularCustomer;
     }
 
+    @Override
     public void add(Item i) {
-        bill.add(i);
-        if (regularCustomer && i.getDiscount() > 0) {
+        super.add(i);
+        if (regularCustomer && i.getDiscount() > 0.0) {
             discountCount++;
             discountAmount += i.getDiscount();
         }
     }
 
+    @Override
     public double getTotal() {
-        double full = bill.getTotal();
+        double full = super.getTotal();
         return regularCustomer ? (full - discountAmount) : full;
     }
 
@@ -33,19 +37,13 @@ public class DiscountBill2 {
         return regularCustomer ? discountAmount : 0.0;
     }
 
+    /** 100 - (priceWithDiscount * 100) / fullPrice. */
     public double getDiscountPercent() {
-        double full = bill.getTotal();
-        if (!regularCustomer || full == 0) return 0.0;
+        double full = super.getTotal();
+        if (!regularCustomer || full == 0.0) {
+            return 0.0;
+        }
         double withDiscount = full - discountAmount;
         return 100.0 - (withDiscount * 100.0) / full;
-    }
-
-    // ✅ Додаткові делегати (якщо їх викликають тести)
-    public Employee getClerk() {
-        return bill.getClerk();
-    }
-
-    public java.util.List<Item> getItems() {
-        return bill.getItems();
     }
 }

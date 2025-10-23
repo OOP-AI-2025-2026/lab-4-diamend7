@@ -1,8 +1,7 @@
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import ua.opnu.bill.DiscountBill2;
-import ua.opnu.bill.Employee;
-import ua.opnu.bill.Item;
+import ua.opnu.java.inheritance.bill.Employee;
+import ua.opnu.java.inheritance.bill.Item;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -266,7 +265,6 @@ public class Task4Test {
             boolean preferred = true;
             DiscountBill2 bill = new DiscountBill2(new Employee("clerk-1"), preferred);
             bill.add(new Item("rice", 3.00, 0.75));
-
 
             double expected = 25.0;
             assertEquals(expected, bill.getDiscountPercent());

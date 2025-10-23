@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import ua.opnu.point.Point3D;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -169,7 +168,5 @@ public class Task3Test {
             double expected = 5.196152422706632;
             assertEquals(expected, point.distanceFromOrigin());
         }
-    }
-}
     }
 }

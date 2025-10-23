@@ -1,7 +1,7 @@
 package ua.opnu.point;
 
+/** 3D point that extends Point by adding z coordinate and 3D behavior. */
 public class Point3D extends Point {
-
     private int z;
 
     public Point3D() {
@@ -23,23 +23,24 @@ public class Point3D extends Point {
         this.z = z;
     }
 
+    /** For 2D setLocation, z must reset to 0. */
     @Override
     public void setLocation(int x, int y) {
         super.setLocation(x, y);
-        this.z = 0;   // ВАЖЛИВО: 3D перетворюється на 2D → z = 0
+        this.z = 0;
     }
 
     public double distance(Point3D p) {
-        long dx = this.getX() - p.getX();
-        long dy = this.getY() - p.getY();
-        long dz = this.z - p.getZ();
+        long dx = (long) getX() - p.getX();
+        long dy = (long) getY() - p.getY();
+        long dz = (long) this.z - p.getZ();
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
     @Override
     public double distanceFromOrigin() {
-        long dx = this.getX();
-        long dy = this.getY();
+        long dx = getX();
+        long dy = getY();
         long dz = this.z;
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
