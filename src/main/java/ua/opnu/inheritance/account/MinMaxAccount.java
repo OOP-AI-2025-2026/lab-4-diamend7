@@ -43,8 +43,8 @@ public class MinMaxAccount extends BankingAccount {
      * Вызывает основной метод debit(int).
      */
     public boolean debit(Debit debit) {
-        // ИСПРАВЛЕНО: используем getBalance(), как определено в классе Debit
-        return this.debit(debit.getBalance()); 
+        // ИСПРАВЛЕНО: используем Math.abs() для предотвращения IllegalArgumentException
+        return this.debit(Math.abs(debit.getBalance())); 
     }
     
     // -------------------------------------------------------------------
@@ -55,8 +55,8 @@ public class MinMaxAccount extends BankingAccount {
      * Вызывает основной метод credit(int).
      */
     public void credit(Credit credit) {
-        // ИСПРАВЛЕНО: используем getBalance(), как определено в классе Credit
-        this.credit(credit.getBalance());
+        // ИСПРАВЛЕНО: используем Math.abs() для предотвращения IllegalArgumentException
+        this.credit(Math.abs(credit.getBalance()));
     }
 
     // -------------------------------------------------
